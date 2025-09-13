@@ -1,5 +1,5 @@
 import os
-import inc.google_drive_downloader
+import gdown
 
 scripts_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -22,4 +22,4 @@ files = [("1rnA5qbvY3FhPnkpTj4EgOssQd4TI6bMX", "5.zip"),
 
 for file_id, res_file in files:
 	print("Downloading", dest_dir+"/"+res_file, "...")
-	inc.google_drive_downloader.download(file_id, dest_dir, res_file)
+	gdown.download(file_id, dest_dir, res_file)
