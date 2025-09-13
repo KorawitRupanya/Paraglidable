@@ -1,3 +1,4 @@
+# Base image
 FROM tensorflow/tensorflow:latest-py3
 
 ARG USERNAME=paraglidable
@@ -5,24 +6,49 @@ RUN useradd -m $USERNAME
 ENV HOME /home/$USERNAME
 
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get -y update && apt-get install -y --no-install-recommends net-tools libopenjp2-7-dev libpng-dev libpng16-16 vim sass wget qt5-default pdf2svg apache2 php libapache2-mod-php nodejs npm ibgeos-3.6.2 libgeos-dev unzip
 
-# grib
-RUN apt-get -y update && apt-get install -y --no-install-recommends libgrib-api-dev libgrib-api0
-RUN apt-get -y update && apt-get install -y --no-install-recommends libeccodes-dev libeccodes0
+ENV NPY_DISABLE_CPU_FEATURES=AVX,AVX2,FMA
 
-# tex2svg
-RUN npm install -y --no-install-recommends --global mathjax-node-cli
+# Install legacy system dependencies + basemap deps
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    net-tools \
+    libopenjp2-7-dev \
+    libpng-dev \
+    libpng16-16 \
+    vim \
+    sass \
+    wget \
+    qt5-default \
+    pdf2svg \
+    apache2 \
+    php \
+    libapache2-mod-php \
+    nodejs \
+    npm \
+    libgrib-api-dev \
+    unzip \
+    sudo \
+    libgeos-dev \
+    libproj-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Add sudo support
-RUN apt-get install -y sudo \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME && \
-    chmod 0440 /etc/sudoers.d/$USERNAME
+# Configure sudo
+RUN echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME && chmod 0440 /etc/sudoers.d/$USERNAME
 
+# Upgrade pip (old version causes install failures)
+RUN pip install --upgrade pip
 
 USER $USERNAME
+WORKDIR $HOME
 
-RUN sudo pip install glob3 tqdm colorama requests pandas matplotlib pillow numba pyproj jupyter
-RUN sudo pip install pygrib
-RUN sudo pip install https://github.com/matplotlib/basemap/archive/master.zip
+# Upgrade pip (old version causes install failures)
+RUN pip install --upgrade pip
 
+# Install basemap 1.2.1 (from GitHub tarball)
+RUN pip install https://github.com/matplotlib/basemap/archive/v1.2.1rel.tar.gz
+
+# Copy Python requirements
+COPY python_requirements.txt .
+
+# Install Python packages (with sudo since USER is non-root)
+RUN sudo pip install --no-cache-dir -r python_requirements.txt
