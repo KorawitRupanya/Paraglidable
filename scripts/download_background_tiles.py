@@ -2,7 +2,7 @@ import os, errno, urllib.request, time, sys, tqdm
 import os.path
 from PIL import Image
 
-tiles_url            = "https://stamen-tiles-a.a.ssl.fastly.net/terrain/%d/%d/%d.png"
+tiles_url            = "https://tile.openstreetmap.org/%d/%d/%d.png"
 skippedTilesFilename = "../tiler/data/skippedTiles.txt"
 dest_dir             = "../tiler/background_tiles"
 
@@ -37,6 +37,7 @@ for zoom in [5,6,7,8,9]:
         for ty in range(7*scaleFactor, 13*scaleFactor):
 
             url = tiles_url % (zoom,tx,ty)
+            print(url)
             destDir  = dest_dir +"/"+ str(zoom) +"/"+ str(tx)
             destFile = destDir +"/"+ str(ty) +".png"
 
