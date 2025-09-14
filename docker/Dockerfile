@@ -41,13 +41,12 @@ WORKDIR $HOME
 # Upgrade pip
 RUN pip install --upgrade pip
 
-# Install basemap (latest release with wheels for ARM64)
-# Upgrade pip and install a compatible Cython before Basemap
+# Upgrade pip and install compatible build deps
 RUN pip install --upgrade pip \
-    && pip install "Cython<3.0" numpy
+    && pip install "Cython<3.0" numpy setuptools wheel
 
-# Install basemap (builds with preinstalled Cython)
-RUN pip install --no-cache-dir basemap==1.3.6
+# Install Basemap 1.3.5 with legacy build (no isolation)
+RUN pip install --no-cache-dir --no-build-isolation basemap==1.3.5
 
 # Copy Python requirements
 COPY python_requirements.txt .
