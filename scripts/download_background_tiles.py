@@ -2,7 +2,7 @@ import os, errno, urllib.request, time, sys, tqdm
 import os.path
 from PIL import Image
 
-tiles_url            = "https://tile.openstreetmap.org/%d/%d/%d.png"
+tiles_url            = "https://tile.osm.ch/switzerland/%d/%d/%d.png"
 skippedTilesFilename = "../tiler/data/skippedTiles.txt"
 dest_dir             = "../tiler/background_tiles"
 
