@@ -15,8 +15,8 @@ files = [
     ("https://www.dropbox.com/scl/fi/om55tinsfih8368uam35g/meteo_params.pkl.zip?rlkey=z402q158xksmregwc4qekw4kl&st=uumwwm3v&dl=0", "meteo_params.pkl.zip"),
     ("https://www.dropbox.com/scl/fi/fvxa21doza7zkbqdorrxp/mountainess_by_cell_alt.pkl.zip?rlkey=3gyzu1bwxcyjd3cmxxsmdug9z&st=2r246gil&dl=0", "mountainess_by_cell_alt.pkl.zip"),
     ("https://www.dropbox.com/scl/fi/1m354a4jbsgzrjdniqmv2/sorted_cells_latlon.pkl.zip?rlkey=aw1a1r9toppawfa14gfbjpier&st=drhavwbk&dl=0", "sorted_cells_latlon.pkl.zip"),
-    ("https://www.dropbox.com/scl/fi/3xwii8d4dqql28ulr6zs8/spots_by_cell.pkl.zip?rlkey=1c4xpj9h7yj01ax59iw0id6xk&st=3votkq2a&dl=0", "sorted_cells.pkl.zip"),
-    ("https://www.dropbox.com/scl/fi/3xwii8d4dqql28ulr6zs8/spots_by_cell.pkl.zip?rlkey=1c4xpj9h7yj01ax59iw0id6xk&st=b4ewq450&dl=0", "spots_by_cell.pkl.zip"),
+    ("https://www.dropbox.com/scl/fi/6rjsqpusjdnhfmf2lpkzh/sorted_cells.pkl.zip?rlkey=rwzohdux8m1hpt0vhqxbnx05z&st=9yjbprm6&dl=0", "sorted_cells.pkl.zip"),
+    ("https://www.dropbox.com/scl/fi/3xwii8d4dqql28ulr6zs8/spots_by_cell.pkl.zip?rlkey=1c4xpj9h7yj01ax59iw0id6xk&st=5ui30nri&dl=0", "spots_by_cell.pkl.zip"),
     ("https://www.dropbox.com/scl/fi/9ulpqafh53c5k49d53gfw/spots_merged.pkl.zip?rlkey=z9rx0vsdolqf8f5ombdv0lejz&st=hv6eatl7&dl=0", "spots_merged.pkl.zip"),
     ("https://www.dropbox.com/scl/fi/kueb70umxsfxe72yclhjf/spots.pkl.zip?rlkey=y00mat258o8twx1tnajz1idkf&st=2xfg8a6k&dl=0", "spots.pkl.zip")
 ]
