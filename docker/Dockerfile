@@ -14,19 +14,12 @@ ENV NPY_DISABLE_CPU_FEATURES=AVX,AVX2,FMA
 
 # Update apt and install essential packages
 # Install system deps for PyGObject / Cairo + Basemap deps (GEOS, PROJ)
+# Install GEOS development libraries (required by basemap)
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    python3-dev \
-    libeccodes-dev \
-    libproj-dev \
-    libjpeg-dev \
-    libpng-dev \
-    libopenjp2-7-dev \
-    zlib1g-dev \
-    libhdf5-dev \
-    libssl-dev \
-    cargo \
+    libgeos-dev \
+    libgeos++-dev \
     && rm -rf /var/lib/apt/lists/*
+
 
 # Create non-root user
 RUN adduser --disabled-password --gecos "" $USERNAME \
