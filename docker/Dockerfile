@@ -21,7 +21,6 @@ RUN apt-get update && apt-get install -y \
     libproj-dev \
     libjpeg-dev \
     libpng-dev \
-    libjasper-dev \
     libopenjp2-7-dev \
     zlib1g-dev \
     libhdf5-dev \
