@@ -13,19 +13,15 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV NPY_DISABLE_CPU_FEATURES=AVX,AVX2,FMA
 
 # Update apt and install essential packages
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    apt-utils \
-    sudo \
-    adduser \
-    net-tools \
-    vim \
-    wget \
-    unzip \
-    python3-pip \
-    libopenjp2-7-dev \
-    libpng-dev \
-    libgeos-dev \
-    libproj-dev \
+# Install system deps for PyGObject / Cairo
+RUN apt-get update && apt-get install -y \
+    python3-gi \
+    gir1.2-gtk-3.0 \
+    libcairo2-dev \
+    pkg-config \
+    python3-cairo \
+    gobject-introspection \
+    libgirepository1.0-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Create non-root user
