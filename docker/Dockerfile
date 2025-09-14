@@ -1,28 +1,15 @@
-# Use NVIDIA's TensorFlow L4T image for Jetson (ARM64)
-FROM nvcr.io/nvidia/l4t-tensorflow:r8.9.0-tf2.14-py3
+# Base image
+FROM tensorflow/tensorflow:latest-gpu
 
-# Arguments
 ARG USERNAME=paraglidable
+RUN useradd -m $USERNAME
+ENV HOME /home/$USERNAME
 
-# Create a non-root user
-RUN useradd -m $USERNAME \
-    && echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME
-
-# Set environment
-ENV HOME=/home/$USERNAME
 ENV DEBIAN_FRONTEND=noninteractive
+
 ENV NPY_DISABLE_CPU_FEATURES=AVX,AVX2,FMA
 
-# Set working directory
-WORKDIR $HOME
-USER $USERNAME
-
-# Upgrade pip
-RUN pip install --upgrade pip
-
-# Install system dependencies (sudo needed since we are non-root)
-USER root
+# Install legacy system dependencies + basemap deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
     net-tools \
     libopenjp2-7-dev \
@@ -45,18 +32,23 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libproj-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Return to non-root user
+# Configure sudo
+RUN echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME && chmod 0440 /etc/sudoers.d/$USERNAME
+
+# Upgrade pip (old version causes install failures)
+RUN pip install --upgrade pip
+
 USER $USERNAME
 WORKDIR $HOME
 
-# Install basemap 1.2.1 from GitHub tarball
-RUN pip install --no-cache-dir https://github.com/matplotlib/basemap/archive/v1.2.1rel.tar.gz
+# Upgrade pip (old version causes install failures)
+RUN pip install --upgrade pip
+
+# Install basemap 1.2.1 (from GitHub tarball)
+RUN pip install https://github.com/matplotlib/basemap/archive/v1.2.1rel.tar.gz
 
 # Copy Python requirements
 COPY python_requirements.txt .
 
-# Install Python dependencies
+# Install Python packages (with sudo since USER is non-root)
 RUN sudo pip install --no-cache-dir -r python_requirements.txt
-
-# Set default workdir
-WORKDIR $HOME
