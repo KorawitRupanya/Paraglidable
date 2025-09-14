@@ -11,11 +11,13 @@ USER root
 ENV HOME=/home/$USERNAME
 ENV DEBIAN_FRONTEND=noninteractive
 ENV NPY_DISABLE_CPU_FEATURES=AVX,AVX2,FMA
+ENV GEOS_DIR=/usr
 
 # Update apt and install essential packages
 # Install system deps for PyGObject / Cairo + Basemap deps (GEOS, PROJ)
 # Install GEOS development libraries (required by basemap)
 RUN apt-get update && apt-get install -y \
+    libgeos-dev \
     libproj-dev \
     proj-bin \
     && rm -rf /var/lib/apt/lists/*
@@ -37,8 +39,8 @@ RUN pip install --upgrade pip
 RUN pip install --upgrade pip \
     && pip install "Cython<3.0" numpy setuptools wheel
 
-# Install Basemap 1.3.5 with legacy build (no isolation)
-RUN pip install --no-cache-dir --no-build-isolation basemap==1.3.5 pyproj==2.4.2.post1
+RUN pip install --no-cache-dir pyproj==2.4.2.post1
+RUN pip install --no-cache-dir basemap==1.3.5
 
 # Copy Python requirements
 COPY python_requirements.txt .
