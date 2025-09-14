@@ -15,18 +15,18 @@ ENV NPY_DISABLE_CPU_FEATURES=AVX,AVX2,FMA
 # Update apt and install essential packages
 # Install system deps for PyGObject / Cairo + Basemap deps (GEOS, PROJ)
 RUN apt-get update && apt-get install -y \
-    python3-gi \
-    gir1.2-gtk-3.0 \
-    libcairo2-dev \
-    pkg-config \
-    python3-cairo \
-    gobject-introspection \
-    libgirepository1.0-dev \
-    libgeos-dev \
+    build-essential \
+    python3-dev \
+    libeccodes-dev \
     libproj-dev \
-    proj-data \
-    proj-bin \
-    sudo \
+    libjpeg-dev \
+    libpng-dev \
+    libjasper-dev \
+    libopenjp2-7-dev \
+    zlib1g-dev \
+    libhdf5-dev \
+    libssl-dev \
+    cargo \
     && rm -rf /var/lib/apt/lists/*
 
 # Create non-root user
