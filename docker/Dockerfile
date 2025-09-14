@@ -37,10 +37,12 @@ RUN pip install --upgrade pip
 
 # Upgrade pip and install compatible build deps
 RUN pip install --upgrade pip \
-    && pip install "Cython<3.0" numpy setuptools wheel
-
-RUN pip install --no-cache-dir pyproj==2.4.2.post1
+    && pip install numpy setuptools wheel
+# Downgrade Cython for basemap compatibility
+RUN pip install --no-cache-dir "Cython<3.0,>=0.29"
+# Then install basemap
 RUN pip install --no-cache-dir basemap==1.3.5
+RUN pip install --no-cache-dir pyproj==2.4.2.post1
 
 # Copy Python requirements
 COPY python_requirements.txt .
