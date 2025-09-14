@@ -1,5 +1,5 @@
 # Base image: NVIDIA L4T TensorFlow (ARM64, GPU-enabled)
-FROM nvcr.io/nvidia/l4t-tensorflow:r8.9.0-tf2.14-py3
+FROM nvcr.io/nvidia/l4t-tensorflow:r35.3.1-tf2.11-py3
 
 # Arguments
 ARG USERNAME=paraglidable
