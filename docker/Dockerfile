@@ -1,16 +1,15 @@
 # Base image
 FROM tensorflow/tensorflow:latest-gpu
 
+# Arguments
 ARG USERNAME=paraglidable
-RUN useradd -m $USERNAME
-ENV HOME /home/$USERNAME
 
-ENV DEBIAN_FRONTEND=noninteractive
+# Ensure root for installing system packages and user creation
+USER root
 
-ENV NPY_DISABLE_CPU_FEATURES=AVX,AVX2,FMA
-
-# Install legacy system dependencies + basemap deps
+# Install adduser and sudo if missing
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    adduser sudo \
     net-tools \
     libopenjp2-7-dev \
     libpng-dev \
@@ -27,28 +26,32 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     npm \
     libgrib-api-dev \
     unzip \
-    sudo \
     libgeos-dev \
     libproj-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Configure sudo
-RUN echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME && chmod 0440 /etc/sudoers.d/$USERNAME
+# Create non-root user
+RUN adduser --disabled-password --gecos "" $USERNAME \
+    && echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
 
-# Upgrade pip (old version causes install failures)
-RUN pip install --upgrade pip
+# Set environment
+ENV HOME=/home/$USERNAME
+ENV DEBIAN_FRONTEND=noninteractive
+ENV NPY_DISABLE_CPU_FEATURES=AVX,AVX2,FMA
 
+# Switch to non-root user
 USER $USERNAME
 WORKDIR $HOME
 
-# Upgrade pip (old version causes install failures)
+# Upgrade pip
 RUN pip install --upgrade pip
 
-# Install basemap 1.2.1 (from GitHub tarball)
-RUN pip install https://github.com/matplotlib/basemap/archive/v1.2.1rel.tar.gz
+# Install basemap 1.2.1 from GitHub tarball
+RUN pip install --no-cache-dir https://github.com/matplotlib/basemap/archive/v1.2.1rel.tar.gz
 
 # Copy Python requirements
 COPY python_requirements.txt .
 
-# Install Python packages (with sudo since USER is non-root)
+# Install Python packages with sudo (non-root)
 RUN sudo pip install --no-cache-dir -r python_requirements.txt
